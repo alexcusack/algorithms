@@ -7,8 +7,8 @@ my_rectangle = {
 }
 
 second = {
-  x: 8,  #8
-  y: 5,  # 5
+  x: 8,
+  y: 5,
   width: 2,
   height: 2,
 }
@@ -26,7 +26,7 @@ def find_overlap(rectangle1, rectangle2)
 
   if !x_start || !y_start
     catch :NoMethodError do
-       p "oops! Doesn't look like those rectangles overlap at all"
+      p "oops! Doesn't look like those rectangles overlap at all"
     end
   end
 
