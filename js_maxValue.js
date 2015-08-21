@@ -2,11 +2,9 @@
 // reduce(function(index, value){ // }, "type of the desired output")
 
 var findMax = function(list){
-  maxValue = list.reduce(function(currentMax, currentNumber){
-    currentNumber > currentMax ? currentMax = currentNumber : currentMax = currentMax
-    return currentMax
+  return list.reduce(function(currentMax, currentNumber){
+    return currentNumber > currentMax ? currentNumber : currentMax
   }, 0)
-  return maxValue
 }
 
 console.log(findMax([1,3,4,5,6,2]) === 6)
