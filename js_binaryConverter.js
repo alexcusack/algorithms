@@ -1,14 +1,10 @@
 // - write a function that takes a decimal number (42) and returns a string of binary digits (“101010”), using a stack
 
 var binaryConverter = function(number, binaryArray){
-  if (number === 0 ) {return "0" }
   binaryArray.unshift(number%2)
   var remainder = Math.floor(number/2)
-  if (number > 0 ) { binaryConverter(remainder, binaryArray) }
-  return binaryArray.join('')
+  return number > 0 ? binaryConverter(remainder, binaryArray) : binaryArray.join('')
 }
-
-
 
 ;[
   {
@@ -19,22 +15,32 @@ var binaryConverter = function(number, binaryArray){
   {
     name: "42 to binary",
     input: 42,
-    expected: "101010",
+    expected: "0101010",
   },
   {
     name: "10 to binary",
     input: 10,
-    expected: "1010",
+    expected: "01010",
   },
   {
     name: "4 to binary",
     input: 4,
-    expected: "100",
+    expected: "0100",
   },
   {
     name: "44 to binary",
-    input: 4,
-    expected: "101100",
+    input: 44,
+    expected: "0101100",
+  },
+    {
+    name: "876 to binary",
+    input: 876,
+    expected: "01101101100",
+  },
+  {
+    name: "8300482 to binary",
+    input: 8300482,
+    expected: "011111101010011111000010",
   },
 ].forEach(function(td){
   var actual = binaryConverter(td.input, [])
