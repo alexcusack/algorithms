@@ -73,19 +73,19 @@ var find = function(leafOrBranch, matcher){
 }
 
 // bredth first
-var find = function(node, matcher){
-  console.dir(node, {depth: null})
-  if(/*is a leaf?*/ node && !node.reduce){ return matcher(node) ? node : undefined }
-  if(/*is an empty branch?*/node.length === 0){return}
-  var head = node[0]
-  var rest = node.slice(1)
-  return (head !== node[node.length-1] ? find(rest, matcher) : undefined )|| (find(head, matcher) || find(rest, matcher))
-}
+// var find = function(node, matcher){
+//   console.dir(node, {depth: null})
+//   if(/*is a leaf?*/ node && !node.reduce){ return matcher(node) ? node : undefined }
+//   if(/*is an empty branch?*/node.length === 0){return}
+//   var head = node[0]
+//   var rest = node.slice(1)
+//   return (head !== node[node.length-1] ? find(rest, matcher) : undefined )|| (find(head, matcher) || find(rest, matcher))
+// }
 
 
 
 
-var isx = function(e){return e[0] === "x"}
+// var isx = function(e){return e[0] === "x"}
 
 ;[
   // {
