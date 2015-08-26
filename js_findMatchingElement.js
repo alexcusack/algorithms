@@ -56,11 +56,11 @@
 var isOdd = function(currentValue){return currentValue % 2 !== 0}
 
 // find element in unnested list
-var findSingleElement = function(list, matcher){
-  var head = list[0]
-  if (head === undefined){return}
-  return matcher(head) ? head : find(list.slice(1) ,matcher)
-}
+// var findSingleElement = function(list, matcher){
+//   var head = list[0]
+//   if (head === undefined){return}
+//   return matcher(head) ? head : find(list.slice(1) ,matcher)
+// }
 
 // find element bredth first over nested list of lists
 var find = function(leafOrBranch, matcher){
@@ -85,49 +85,49 @@ var find = function(leafOrBranch, matcher){
 
 
 
-// var isx = function(e){return e[0] === "x"}
+var isx = function(e){return e[0] === "x"}
 
 ;[
-  // {
-  //   name: "single element, match",
-  //   input: ["x", isx],
-  //   expected: "x"
-  // },
-  // {
-  //   name: "single element, no match:",
-  //   input: ["m", isx],
-  //   expected: undefined
-  // },
-  // {
-  //   name: "empty list",
-  //   input: [[], isx],
-  //   expected: undefined
-  // },
-  // {
-  //   name: "single element list",
-  //   input: [['x'], isx],
-  //   expected: "x"
-  // },
-  //  {
-  //   name: "two element list",
-  //   input: [['a', 'x'], isx],
-  //   expected: "x"
-  // },
-  // {
-  //   name: "single nest element list",
-  //   input: [['a', ['x']], isx],
-  //   expected: "x"
-  // },
-  //  {
-  //   name: "double nest element list",
-  //   input: [['a', [['x']]], isx],
-  //   expected: "x"
-  // },
-  //  {
-  //   name: "also nest element list",
-  //   input: [[[[[['a']]]], [['x']]], isx],
-  //   expected: "x"
-  // },
+  {
+    name: "single element, match",
+    input: ["x", isx],
+    expected: "x"
+  },
+  {
+    name: "single element, no match:",
+    input: ["m", isx],
+    expected: undefined
+  },
+  {
+    name: "empty list",
+    input: [[], isx],
+    expected: undefined
+  },
+  {
+    name: "single element list",
+    input: [['x'], isx],
+    expected: "x"
+  },
+   {
+    name: "two element list",
+    input: [['a', 'x'], isx],
+    expected: "x"
+  },
+  {
+    name: "single nest element list",
+    input: [['a', ['x']], isx],
+    expected: "x"
+  },
+   {
+    name: "double nest element list",
+    input: [['a', [['x']]], isx],
+    expected: "x"
+  },
+   {
+    name: "also nest element list",
+    input: [[[[[['a']]]], [['x']]], isx],
+    expected: "x"
+  },
     {
     name: "test bredth first",
     input: [[[[[['x1']]]], "x2", [['a']]], isx],

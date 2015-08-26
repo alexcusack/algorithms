@@ -2,44 +2,48 @@
 // depth first search
 // input: an element or list, a condition to match
 // output: list
-var find = function(leafOrBranch, matcher, matches){
-  if (!leafOrBranch.reduce) { return matcher(leafOrBranch) ? matches.push(leafOrBranch) : matches}
-  var stack = leafOrBranch
-  while (stack.length > 0 ) {
-    var head = stack.shift()
-    find(head, matcher, matches)
-  }
-  return matches
+var find = function(node, matcher){
+  // console.log(node)
+  if (/* leaf? */ !node.reduce) { return matcher(node) ? [node] : [] }
+  if (/* empty branch? */node.length === 0) { return [] }
+  var head = node[0]
+  var rest = node.slice(1)
+  return find(head, matcher).concat(find(rest, matcher))
 }
 
-var isx = function(e){return e === "x"}
+var isx = function(e){return e[0] === "x"}
 
 ;[
   {
+    name: "no element match",
+    input: ["m" , isx],
+    expected: []
+  },
+  {
     name: "single element, match",
-    input: [["x"], isx, [], []],
+    input: [["x"] , isx],
     expected: ["x"]
   },
   {
     name: "single match nested list",
-    input: [[[[[[['x']]]]]], isx, [], []],
+    input: [[[[[[['x']]]]]], isx],
     expected: ["x"]
   },
    {
     name: "two match list",
-    input: [[[['x']], [['a']], 'x'], isx, [], []],
-    expected: ["x", 'x']
+    input: [[[['x1']], [['a']], 'x2'], isx],
+    expected: ["x1", 'x2']
   },
   {
     name: "three match nested list",
-    input: [['a',[[[[['x']]]]], [[[[[[['x']]]]]]], [[[[["x"]]]]]], isx, [], []],
-    expected: ["x", "x", "x"]
+    input: [['a',[[[[['x1']]]]], [[[[[[['x2']]]]]]], [[[[["x3"]]]]]], isx, []],
+    expected: ["x1", "x2", "x3"]
   },
 ].forEach(function(td){
-  var actual = find(td.input[0], td.input[1], td.input[2], td.input[3])
+  var actual = find(td.input[0], td.input[1])
   var pass = actual.join('') === td.expected.join('')
   if (pass){
-    console.log(td.name, "passed")
+    console.log("passed:", td.name)
   }else{
     console.log(td.name, "failed")
     console.log("actual:", actual)

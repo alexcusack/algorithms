@@ -1,29 +1,49 @@
 // find a single element, breadth first
 // input: a list and a matcher
 // output: a list
-var find = function(leafOrBranch, matcher, queue){
-  // console.dir(leafOrBranch, {depth: null})
-  for (var i = 0; i < leafOrBranch.length; ++i) {
-    if (leafOrBranch[i].reduce)   { queue.push(leafOrBranch[i]) }
-    if (matcher(leafOrBranch[i])) { return [leafOrBranch[i]] }
+// var find = function(leafOrBranch, matcher, queue){
+//   // console.dir(leafOrBranch, {depth: null})
+//   for (var i = 0; i < leafOrBranch.length; ++i) {
+//     if (leafOrBranch[i].reduce)   { queue.push(leafOrBranch[i]) }
+//     if (matcher(leafOrBranch[i])) { return [leafOrBranch[i]] }
+//   }
+//   if (queue.length === 0 ){ return []} //return empty list if nothing found
+//   return find(queue.shift(), matcher, queue)
+// }
+
+
+// // find all matches, breadth first
+// // input: a list and a matcher
+// // output: a list
+// var find = function(leafOrBranch, matcher, matches, queue){
+//   // console.dir(leafOrBranch, {depth: null})
+//   for (var i = 0; i < leafOrBranch.length; ++i) {
+//     if (leafOrBranch[i].reduce)   { queue.push(leafOrBranch[i]) }
+//     if (matcher(leafOrBranch[i])) { matches.push(leafOrBranch[i]) }
+//   }
+//   if (queue.length === 0 ){return matches}
+//   return find(queue.shift(), matcher, matches, queue)
+// }
+
+// input: item to match, matcher
+// output: list
+
+var find = function(node, matcher){
+  var queue = node
+  var matches = []
+  var head
+  while (queue.length > 0) {
+    head = queue.pop()[0]
+    if (/* a branch? */ head.reduce){ queue.push(head) }
+    else { matcher(head) ? matches.push(head) : matches }
   }
-  if (queue.length === 0 ){return []}
-  return find(queue.shift(), matcher, queue)
+return matches
 }
+
+
+
 
 var isx = function(e){return e === "x"}
-
-var find = function(leafOrBranch, matcher, matches, queue){
-  // console.dir(leafOrBranch, {depth: null})
-  for (var i = 0; i < leafOrBranch.length; ++i) {
-    if (leafOrBranch[i].reduce)   { queue.push(leafOrBranch[i]) }
-    if (matcher(leafOrBranch[i])) { matches.push(leafOrBranch[i]) }
-  }
-  if (queue.length === 0 ){return matches}
-  return find(queue.shift(), matcher, matches, queue)
-}
-
-
 ;[
   {
     name: "single element, match",
@@ -41,10 +61,10 @@ var find = function(leafOrBranch, matcher, matches, queue){
     expected: ["x", "x"]
   },
 ].forEach(function(td){
-  var actual = find(td.input[0], td.input[1], td.input[2], td.input[3])
+  var actual = find(td.input[0], td.input[1])
   var pass = actual.join('') === td.expected.join('')
   if (pass){
-    console.log(td.name, "passed")
+    console.log("Passed:", td.name)
   }else{
     console.log(td.name, "failed")
     console.log("actual:", actual)

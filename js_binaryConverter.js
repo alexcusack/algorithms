@@ -1,10 +1,20 @@
 // - write a function that takes a decimal number (42) and returns a string of binary digits (“101010”), using a stack
 
-var binaryConverter = function(number, binaryArray){
-  binaryArray.unshift(number%2)
-  var remainder = Math.floor(number/2)
-  return number > 0 ? binaryConverter(remainder, binaryArray) : binaryArray.join('')
+// "public"
+// (num) -> str
+var base10tobase2String = function(base10number){
+  return base10tobase2list(base10number, []).join('')
 }
+
+// "internal"
+// (num, list) -> list
+var base10tobase2list = function(number, binaryArray){
+  binaryArray = binaryArray || []
+  binaryArray.unshift(number%2) /* for numbers evenly divisible by 2, add 0 to start of binaryArray, else add 1 to start  */
+  if (number <= 1) { return binaryArray }
+  return base10tobase2list(Math.floor(number/2), binaryArray)
+}
+
 
 ;[
   {
@@ -13,37 +23,47 @@ var binaryConverter = function(number, binaryArray){
     expected: "0",
   },
   {
-    name: "42 to binary",
-    input: 42,
-    expected: "0101010",
+    name: "1 to binary",
+    input: 1,
+    expected: "1",
   },
   {
-    name: "10 to binary",
-    input: 10,
-    expected: "01010",
+    name: "2 to binary",
+    input: 2,
+    expected: "10",
+  },
+  {
+    name: "3 to binary",
+    input: 3,
+    expected: "11",
   },
   {
     name: "4 to binary",
     input: 4,
-    expected: "0100",
+    expected: "100",
+  },
+  {
+    name: "10 to binary",
+    input: 10,
+    expected: "1010",
   },
   {
     name: "44 to binary",
     input: 44,
-    expected: "0101100",
+    expected: "101100",
   },
     {
     name: "876 to binary",
     input: 876,
-    expected: "01101101100",
+    expected: "1101101100",
   },
   {
     name: "8300482 to binary",
     input: 8300482,
-    expected: "011111101010011111000010",
+    expected: "11111101010011111000010",
   },
 ].forEach(function(td){
-  var actual = binaryConverter(td.input, [])
+  var actual = base10tobase2String(td.input)
   var pass = actual === td.expected
   if (pass){
     console.log(td.name, "passed")
