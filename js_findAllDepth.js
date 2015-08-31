@@ -2,14 +2,15 @@
 // depth first search
 // input: an element or list, a condition to match
 // output: list
+////////////////////////////////////////////////////////////////////////
 var find = function(node, matcher){
-  // console.log(node)
   if (/* leaf? */ !node.reduce) { return matcher(node) ? [node] : [] }
   if (/* empty branch? */node.length === 0) { return [] }
   var head = node[0]
   var rest = node.slice(1)
   return find(head, matcher).concat(find(rest, matcher))
 }
+
 
 var isx = function(e){return e[0] === "x"}
 
@@ -41,7 +42,8 @@ var isx = function(e){return e[0] === "x"}
   },
 ].forEach(function(td){
   var actual = find(td.input[0], td.input[1])
-  var pass = actual.join('') === td.expected.join('')
+  var pass = actual.join(',') === td.expected.join(',') // no nesting so this is 'fine'
+  var pass = JSON.stringify(actual) === JSON.stringify(td.expected)
   if (pass){
     console.log("passed:", td.name)
   }else{

@@ -3,20 +3,17 @@
 
 // input: two trees
 // output: boolean
+// [["x", "y"], "xy"]
 var isEqual = function(treeA, treeB){
-  if (treeA.length === 0 || treeB.length === 0 ) { return true}
-  if (treeA === undefined || treeB === undefined ){ return false}
-  if (treeA.length !== treeB.length ){ return false}
-  if (/* a leaf */ !treeA.reduce){ return treeA === treeB ?  true : false }
+  if (/* TreeA is a leaf? */ !treeA.reduce || !treeB.reduce ){ return /* B must be mathcing leaf */ treeA === treeB }
+  if (treeA.length === 0 && treeB.length === 0 ) { return true }
+  if (treeA.length !== treeB.length){ return false }
   var headOfTreeA = treeA[0]
   var headOfTreeB = treeB[0]
   var tailOfTreeA = treeA.slice(1)
   var tailOfTreeB = treeB.slice(1)
-  return isEqual( headOfTreeA, headOfTreeB ) === true  && isEqual(tailOfTreeA, tailOfTreeB) === true
+  return isEqual( headOfTreeA, headOfTreeB ) && isEqual(tailOfTreeA, tailOfTreeB)
 }
-
-
-
 
 ;[
   {
@@ -25,18 +22,38 @@ var isEqual = function(treeA, treeB){
     expected: true,
   },
   {
+    name: 'Empty tree and non, fail',
+    input: [[],[1]],
+    expected: false,
+  },
+  {
+    name: 'Empty tree and non, fail',
+    input: [[1], 1],
+    expected: false,
+  },
+  {
+    name: 'list with strings',
+    input: [["x", "y"], "xy"],
+    expected: false,
+  },
+  {
     name: 'single element Trees',
     input: [[2],[2]],
     expected: true,
   },
+   {
+    name: 'single element Trees with string',
+    input: [[2],["hi"]],
+    expected: false,
+  },
   {
     name: 'single element content, fail',
-    input: [[2],[2]],
-    expected: true,
+    input: [[2],[1]],
+    expected: false,
   },
   {
     name: 'single element nested Tree, fail',
-    input: [[[2]],[9]],
+    input: [[2],[9]],
     expected: false,
   },
   {
