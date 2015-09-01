@@ -5,37 +5,36 @@
 // output: Object (map)
 var parseString = function(stringOfParams){
   if (stringOfParams.length === 0) { return {} }
-  return stringOfParams.split('&').reduce(function(hashMap, currentPair){
-    var key = currentPair[0]
-    if (currentPair.length === 3){
-      hashMap[key] = Math.floor(currentPair[2])
+  return stringOfParams.split('&').reduce(function(hashMap, currentStrPair){
+    var key = currentStrPair[0]
+    if (currentStrPair.length === 3){
+      hashMap[key] = Math.floor(currentStrPair[2])
     } else {
-      hashMap[key] = parseString(/*get key out of [] */ currentPair.slice(2)[0]
-                          + /* add rest of string */ currentPair.slice(4))
+      hashMap[key] = parseString(/*get key out of [] */ currentStrPair.slice(2)[0]
+                      + /* concat rest of string */ currentStrPair.slice(4))
     }
     return hashMap
   }, {})
 }
 
-
-// input: map
+// input: hashmap
 // output: string
-var seralize = function(hashMap, nestedKey) {
-  var seralizedString = ""
+var serialize = function(hashMap, nestedKey) {
+  var serializedString = ""
   var count = 0
   for (key in hashMap){
     var value = hashMap[key]
     if (nestedKey) {key = "[" + key + "]"}
-    if (/* multiple k,v pairs */ count > 0) { seralizedString = seralizedString.concat("&") }
-    if (/* value not an object */ value.constructor() === '' || value.constructor() === 0 ) { seralizedString = seralizedString.concat(key + '=' + value) }
+    if (/* multiple k,v pairs */ count > 0) { serializedString = serializedString.concat("&") }
+    if (/* value not an object */ typeof(value) !== 'object' ) { serializedString = serializedString.concat(key + '=' + value) }
     else {
-      nestedKey = true /* set nestedKey to true, concat nestedKey keys with [key] */
-      seralizedString = seralizedString.concat(key).concat(seralize(value, nestedKey))
+      nestedKey = true /* set nestedKey to true, will concat nestedKey keys with [key] */
+      serializedString = serializedString.concat(key).concat(serialize(value, nestedKey))
       nestedKey = false /* reset nestedKey to false */
     }
-    ++count
+    ++count /* increment count, count > 1 appends '&' between output string pairs */
   }
-  return seralizedString
+  return serializedString
 }
 
 
@@ -78,12 +77,12 @@ var seralize = function(hashMap, nestedKey) {
   }else{
     console.log("actual:  ", actual)
     console.log("expected:", td.expected)
-    // process.exit()
+    process.exit()
   }
 })
 
 console.log('')
-console.log('full loop test:', seralize(parseString('a=1&b[c][d]=4')) === 'a=1&b[c][d]=4')
+console.log('full loop test:', serialize(parseString('a=1&b[c][d]=4')) === 'a=1&b[c][d]=4')
 console.log('')
 
 console.log('serialize tests')
@@ -120,7 +119,7 @@ console.log('serialize tests')
     expected: "a=1&b[c][d]=4",
   },
 ].forEach(function(td){
-  var actual = seralize(td.input)
+  var actual = serialize(td.input)
   var pass = actual === td.expected
   if (pass){
     console.log("passed:", td.name)
