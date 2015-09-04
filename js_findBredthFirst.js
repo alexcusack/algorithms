@@ -38,20 +38,21 @@ var find = function(node, matcher){
 
 var isBranch = function(node){ return node.reduce }
 var isLeaf = function(node){ return !isBranch(node) }
+
 // breadth first, no mutation
-var find = function(node, matcher){
-  var foundElements =  (isLeaf(node) ? [node] : node).reduce(function(memo, currentNode) {
-    var matches = memo[0]
-    var queue = memo[1]
-    if (isLeaf(currentNode)) {
-      return matcher(currentNode) ?
-        [matches.concat(currentNode), queue] :
-        [matches, queue] }
-    return [matches, queue.concat(currentNode)]
-  }, [[],[]])
-  if (foundElements[1].length == 0) { return foundElements[0]}
-  return foundElements[0].concat(find(foundElements[1], matcher))
-}
+// var find = function(node, matcher){
+//   var foundElements =  (isLeaf(node) ? [node] : node).reduce(function(memo, currentNode) {
+//     var matches = memo[0]
+//     var queue = memo[1]
+//     if (isLeaf(currentNode)) {
+//       return matcher(currentNode) ?
+//         [matches.concat(currentNode), queue] :
+//         [matches, queue] }
+//     return [matches, queue.concat(currentNode)]
+//   }, [[],[]])
+//   if (foundElements[1].length == 0) { return foundElements[0]}
+//   return foundElements[0].concat(find(foundElements[1], matcher))
+// }
 
 // input: node (list or element), matching function
 // output: list
@@ -63,15 +64,15 @@ var find = function(node, matcher){
 //   return set[0]
 // }
 
-var reducingFunction = function(pairOfMatchAndQueue, currentElement){
-  var matches = pairOfMatchAndQueue[0]
-  var queue = pairOfMatchAndQueue[1]
-  if ( /* a leaf ? */ !currentElement.reduce){
-    if (/* match? add to set */ matcher(currentElement) ){ return [ matches.concat([currentElement]), queue] }
-    else{/* return set */  return [matches, queue] }
-  }
-  else {/*branch? add to queue */ return [matches , queue.concat(currentElement) ]}
-}
+// var reducingFunction = function(pairOfMatchAndQueue, currentElement){
+//   var matches = pairOfMatchAndQueue[0]
+//   var queue = pairOfMatchAndQueue[1]
+//   if ( /* a leaf ? */ !currentElement.reduce){
+//     if ( match? add to set  matcher(currentElement) ){ return [ matches.concat([currentElement]), queue] }
+//     else{/* return set */  return [matches, queue] }
+//   }
+//   else {/*branch? add to queue */ return [matches , queue.concat(currentElement) ]}
+// }
 
 var isx = function(e){return e[0] === "x"}
 ;[
@@ -95,16 +96,16 @@ var isx = function(e){return e[0] === "x"}
     input: [["x",["x"]], isx, [], []],
     expected: ["x", "x"]
   },
-  // {
-  //   name: "single match nested list, fail",
-  //   input: [[[[[[['m']]]]]], isx, [], []],
-  //   expected: []
-  // },
-  //  {
-  //   name: "double nested list",
-  //   input: [[[[[[[['x1']]]]]], [['a']], [['x2']]], isx, [], []],
-  //   expected: ["x2", "x1"]
-  // },
+  {
+    name: "single match nested list, fail",
+    input: [[[[[[['m']]]]]], isx, [], []],
+    expected: []
+  },
+   {
+    name: "double nested list",
+    input: [[[[[[[['x1']]]]]], [['a']], [['x2']]], isx, [], []],
+    expected: ["x2", "x1"]
+  },
 ].forEach(function(td){
   var actual = find(td.input[0], td.input[1])
   var pass = JSON.stringify(actual) === JSON.stringify(td.expected)
