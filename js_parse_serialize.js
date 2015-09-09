@@ -17,27 +17,41 @@ var parseString = function(stringOfParams){
   }, {})
 }
 
+
+
+
 // input: hashmap
 // output: string
-var serialize = function(hashMap, nestedKey) {
+var serialize = function(hashMap, path) {
+  if (path){log("----", "")}
+  // log("map:", hashMap)
+  // log("path:", path)
   var serializedString = ""
-  var count = 0
+  var firstPair = true
   for (key in hashMap){
     var value = hashMap[key]
-    if (nestedKey) {key = "[" + key + "]"}
-    if (/* multiple k,v pairs */ count > 0) { serializedString = serializedString.concat("&") }
+    log("string:", serializedString)
+    log("path:", path)
+    if (path) {key = path.concat("[" + key + "]")}
+    log("key:", key)
+    if (/* not last k,v pair */ !firstPair ) { serializedString = serializedString.concat("&") }
     if (/* value not an object */ typeof(value) !== 'object' ) { serializedString = serializedString.concat(key + '=' + value) }
     else {
-      nestedKey = true /* set nestedKey to true, will concat nestedKey keys with [key] */
-      serializedString = serializedString.concat(key).concat(serialize(value, nestedKey))
-      nestedKey = false /* reset nestedKey to false */
+      serializedString = serializedString.concat(serialize(value, key))
     }
-    ++count /* increment count, count > 1 appends '&' between output string pairs */
+    firstPair = false /* appends '&' on next iteration */
   }
   return serializedString
 }
 
 
+
+var loggedItems = []
+
+var log = function(name, itemToLog){
+  loggedItems.push([name, itemToLog])
+}
+//parse test
 ;[
   {
     name: 'empty string',
@@ -118,7 +132,21 @@ console.log('serialize tests')
     input: {a: 1, b: { c: {d: 4}}},
     expected: "a=1&b[c][d]=4",
   },
+   {
+    name: 'doubly nested k,v string',
+    input: {
+      a: 1,
+      b: {
+        c: {
+          d: 4 //
+        },
+        e: 5
+      }
+    },
+    expected: "a=1&b[c][d]=4&b[e]=5",
+  },
 ].forEach(function(td){
+  loggedItems = []
   var actual = serialize(td.input)
   var pass = actual === td.expected
   if (pass){
@@ -127,6 +155,9 @@ console.log('serialize tests')
     console.log("failed", td.name)
     console.log("actual:  ", actual)
     console.log("expected:", td.expected)
+    loggedItems.forEach(function(pair){
+      console.log(pair[0], pair[1])
+    })
     process.exit()
   }
 })
