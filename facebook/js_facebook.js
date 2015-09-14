@@ -29,27 +29,36 @@ var layOutDay = function(events, width, height){
 
   for (var i = 0; i < sortedEvents.length; ++i){
     var currentEvent = sortedEvents[i]
-    var previousEvent = sortEvents[i-1]
+    var previousEvent = sortedEvents[i-1]
     var nextEvent = sortedEvents[i+1]
-
-    if (/* end of list */ nextEvent === undefined){ return convertedEventList = convertedEventList.concat(eventBuilder(currentEvent))}
+    log('previousEvent', previousEvent)
+    log('currentEvent', currentEvent)
+    log("compare", priorEventOverlap(currentEvent, previousEvent))
 
     if (eventOverlap(currentEvent, nextEvent)){
       var overlappingEvents = [currentEvent, nextEvent]
       ++i /* increment i to skip 'nextEvent' on next loop through */
 
-      while (eventOverlap(nextEvent, sortedEvents[i+1])){
+     while (eventOverlap(currentEvent, sortedEvents[i+1])){
         overlappingEvents = overlappingEvents.concat(sortedEvents[i+1])
         nextEvent = sortedEvents[++i] /* increment i again to skip until non overlapping event is found */
       }
-
       convertedEventList = convertedEventList.concat(formatOverlappingEvents(overlappingEvents, width))
-    } else if (eventOverlap(currentEvent, previousEvent)) {
-        overlapping = [currentEvent, previousEvent]
-        convertedEventList = convertedEventList.concat(formatOverlappingEvents(overlappingEvents, width))
-    } else {
+    }
+
+    if (priorEventOverlap(currentEvent, previousEvent)) {
+        log("prior match loop", "")
+        var formattedEvents = formatOverlappingEvents([currentEvent, previousEvent], width)
+        /* update prior event */
+        convertedEventList[convertedEventList.length-1] = formattedEvents[1]
+        convertedEventList = convertedEventList.concat(formattedEvents[0])
+    }
+
+    if ( !eventOverlap(currentEvent, nextEvent) && !priorEventOverlap(currentEvent, previousEvent)){
+      // log('no overlaps found', "")
       convertedEventList = convertedEventList.concat(eventBuilder(currentEvent))
     }
+    log('exiting loop. I is', i)
   }
   return convertedEventList
 }
@@ -69,7 +78,8 @@ var formatOverlappingEvents = function(listOfEvents, baseWidth){
 
 var priorEventOverlap = function(currentEvent, previousEvent){
     if (previousEvent === undefined){return false}
-      return currentEvent['start'] < previousEvent['end']
+    log("match?", currentEvent['start'] < previousEvent['end'] )
+    return currentEvent['start'] < previousEvent['end']
 }
 
 var eventOverlap = function(currentEvent, nextEvent){
@@ -96,6 +106,11 @@ var compareEventStarts = function(eventA, eventB){
 }
 
 
+var loggedItems = []
+var log = function (name, itemToLog = '') {
+  loggedItems.push([name, itemToLog])
+  return itemToLog
+}
 
 ;[
   {
@@ -170,17 +185,24 @@ var compareEventStarts = function(eventA, eventB){
   }
 })
 
-
+console.log('')
 console.log('prior overlap')
 ;[
   {
     name: "prior overlap true",
-    input: [{start: 30, end: 150}, {start: 145, end: 670}, ],
+    input: [{start: 30, end: 150}, {start: 145, end: 200}, ],
+    expected: true
+  },
+   {
+    name: "prior overlap test 2",
+    input: [{start: 560, end: 620},
+            {start: 610, end: 670},
+            ],
     expected: true
   },
 
 ].forEach(function(td){
-  var actual = eventOverlap(td.input[0], td.input[1])
+  var actual = priorEventOverlap(td.input[1], td.input[0])
   var pass = JSON.stringify(actual) === JSON.stringify(td.expected)
   if (pass){
     console.log("passed:", td.name)
@@ -233,50 +255,70 @@ console.log('')
                {top: 9, left: 0, width: 600, height: 3}
               ],
   },
+  // {
+  //   name: "multiple overlapping events",
+  //   input: [
+  //           {start: 0, end: 5 },
+  //           {start: 3, end: 7 },
+  //           {start: 6, end: 12 }
+  //          ],
+  //   expected: [
+  //              {top: 0, left: 0, width: 199, height: 5},
+  //              {top: 3, left: 200, width: 199, height: 4},
+  //              {top: 6, left: 0, width: 199, height: 6}
+  //             ],
+  // },
+  // {
+  //   name: "multiple overlapping events in varied order with non overlapping",
+  //   input: [
+  //           {start: 0, end: 5 },
+  //           {start: 3, end: 7 },
+  //           {start: 6, end: 12 },
+  //           {start: 15, end: 20},
+  //           {start: 21, end: 22},
+  //           {start: 22, end: 25},
+  //           {start: 24, end: 27}
+  //          ],
+  //   expected: [
+  //              {top: 0, left: 0, width: 199, height: 5},
+  //              {top: 3, left: 200, width: 199, height: 4},
+  //              {top: 6, left: 400, width: 199, height: 6},
+  //              {top: 15, left: 0, width: 600, height: 5},
+  //              {top: 21, left: 0, width: 600, height: 1},
+  //              {top: 22, left: 0, width: 299, height: 3},
+  //              {top: 24, left: 300, width: 299, height: 3}
+  //             ],
+  // },
+
   {
-    name: "multiple overlapping events",
+    name: "prior event overlap case",
     input: [
-            {start: 0, end: 5 },
-            {start: 3, end: 7 },
-            {start: 6, end: 12 }
-           ],
+            {start: 30, end: 150},
+            {start: 540, end: 600},
+            {start: 560, end: 620},
+            {start: 610, end: 670},
+            ],
     expected: [
-               {top: 0, left: 0, width: 199, height: 5},
-               {top: 3, left: 200, width: 199, height: 4},
-               {top: 6, left: 400, width: 199, height: 6}
-              ],
-  },
-  {
-    name: "multiple overlapping events in varied order with non overlapping",
-    input: [
-            {start: 0, end: 5 },
-            {start: 3, end: 7 },
-            {start: 6, end: 12 },
-            {start: 15, end: 20},
-            {start: 21, end: 22},
-            {start: 22, end: 25},
-            {start: 24, end: 27}
-           ],
-    expected: [
-               {top: 0, left: 0, width: 199, height: 5},
-               {top: 3, left: 200, width: 199, height: 4},
-               {top: 6, left: 400, width: 199, height: 6},
-               {top: 15, left: 0, width: 600, height: 5},
-               {top: 21, left: 0, width: 600, height: 1},
-               {top: 22, left: 0, width: 299, height: 3},
-               {top: 24, left: 300, width: 299, height: 3}
+               {top: 30, left: 0, width: 600, height: 120},
+               {top: 540, left: 0, width: 299, height: 60},
+               {top: 560, left: 300, width: 299, height: 60},
+               {top: 610, left: 0, width: 299, height: 60},
               ],
   },
 
 ].forEach(function(td){
+  loggedItems = []
   var actual = layOutDay(td.input)
   var pass = JSON.stringify(actual) === JSON.stringify(td.expected)
   if (pass){
     console.log("passed:", td.name)
   }else{
-    console.log("failed:", td.name)
-    console.log("expected:", td.expected)
-    console.log("actual:", actual)
+    console.log("FAILED:", td.name)
+    console.log("expected:" )
+    console.log(td.expected)
+    console.log("actual:")
+    console.log(actual)
+    loggedItems.forEach(( [label, item]) => console.log(label, item))
     process.exit()
   }
 })

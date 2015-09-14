@@ -8,34 +8,33 @@ var layOutDay = function(events, width, height){
 
   for (var i = 0; i < sortedEvents.length; ++i){
     var currentEvent = sortedEvents[i]
-    var previousEvent = sortEvents[i-1]
+    var previousEvent = sortedEvents[i-1]
     var nextEvent = sortedEvents[i+1]
-
-    if (/* end of list */ nextEvent === undefined){
-      convertedEventList = convertedEventList.concat(eventBuilder(currentEvent))
-      return renderEvents(convertedEventList)
-    }
 
     if (eventOverlap(currentEvent, nextEvent)){
       var overlappingEvents = [currentEvent, nextEvent]
       ++i /* increment i to skip 'nextEvent' on next loop through */
 
-      while (eventOverlap(currentEvent, sortedEvents[i+1])){
+     while (eventOverlap(currentEvent, sortedEvents[i+1])){
         overlappingEvents = overlappingEvents.concat(sortedEvents[i+1])
         nextEvent = sortedEvents[++i] /* increment i again to skip until non overlapping event is found */
       }
-
       convertedEventList = convertedEventList.concat(formatOverlappingEvents(overlappingEvents, width))
-    } else if (eventOverlap(currentEvent, previousEvent)) {
-        overlapping = [currentEvent, previousEvent]
-        convertedEventList = convertedEventList.concat(formatOverlappingEvents(overlappingEvents, width))
-    } else {
+    }
+
+    if (priorEventOverlap(currentEvent, previousEvent)) {
+        var formattedEvents = formatOverlappingEvents([currentEvent, previousEvent], width)
+        /* update prior event */
+        convertedEventList[convertedEventList.length-1] = formattedEvents[1]
+        convertedEventList = convertedEventList.concat(formattedEvents[0])
+    }
+
+    if ( !eventOverlap(currentEvent, nextEvent) && !priorEventOverlap(currentEvent, previousEvent)){
       convertedEventList = convertedEventList.concat(eventBuilder(currentEvent))
     }
   }
-  return convertedEventList
+  return renderEvents(convertedEventList)
 }
-
 
 var renderEvents = function(eventList){
   eventList.forEach(function(eventNode){
@@ -50,10 +49,12 @@ var renderEvents = function(eventList){
 }
 
 
+
 var priorEventOverlap = function(currentEvent, previousEvent){
     if (previousEvent === undefined){return false}
       return currentEvent['start'] < previousEvent['end']
 }
+
 
 var formatOverlappingEvents = function(listOfEvents, baseWidth){
   var subsetWidth = baseWidth/listOfEvents.length
@@ -88,3 +89,4 @@ var compareEventStarts = function(eventA, eventB){
   if (eventA['start'] === eventB['start']){ return 0 }
   return eventA['start'] > eventB['start'] ? 1 : -1
 }
+
