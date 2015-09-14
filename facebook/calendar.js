@@ -7,8 +7,8 @@ var layOutDay = function(events, width, height){
   var convertedEventList = []
 
   for (var i = 0; i < sortedEvents.length; ++i){
-    currentEvent = sortedEvents[i]
-    nextEvent = sortedEvents[i+1]
+    var currentEvent = sortedEvents[i]
+    var nextEvent = sortedEvents[i+1]
 
     if (/* end of list */ nextEvent === undefined){
       convertedEventList = convertedEventList.concat(eventBuilder(currentEvent))
@@ -19,7 +19,7 @@ var layOutDay = function(events, width, height){
       var overlappingEvents = [currentEvent, nextEvent]
       ++i /* increment i to skip 'nextEvent' on next loop through */
 
-      while (eventOverlap(nextEvent, sortedEvents[i+1])){
+      while (eventOverlap(currentEvent, sortedEvents[i+1])){
         overlappingEvents = overlappingEvents.concat(sortedEvents[i+1])
         nextEvent = sortedEvents[++i] /* increment i again to skip until non overlapping event is found */
       }
