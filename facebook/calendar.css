@@ -1,0 +1,24 @@
+.calendar-container{
+  outline: blue 1px solid;
+  height: 720px;
+  width: 600px;
+  background-color: #F3F3F3;
+}
+
+.event-node{
+  outline: red 0.5px solid;
+  background-color: white;
+  display: none;
+  position: absolute;
+}
+
+.navbar{
+  background-color: #047AD8;
+  height: 40px;
+}
+
+.right-boarder{
+  height: 100%;
+  background-color: #5097D6;
+  width: 7px;
+}
