@@ -6,7 +6,7 @@
 }
 
 .event-node{
-  outline: red 0.5px solid;
+  outline: red 1px solid;
   background-color: white;
   display: none;
   position: absolute;
