@@ -28,8 +28,9 @@ var layOutDay = function(events, width, height){
   var convertedEventList = []
 
   for (var i = 0; i < sortedEvents.length; ++i){
-    currentEvent = sortedEvents[i]
-    nextEvent = sortedEvents[i+1]
+    var currentEvent = sortedEvents[i]
+    var previousEvent = sortEvents[i-1]
+    var nextEvent = sortedEvents[i+1]
 
     if (/* end of list */ nextEvent === undefined){ return convertedEventList = convertedEventList.concat(eventBuilder(currentEvent))}
 
@@ -43,6 +44,9 @@ var layOutDay = function(events, width, height){
       }
 
       convertedEventList = convertedEventList.concat(formatOverlappingEvents(overlappingEvents, width))
+    } else if (eventOverlap(currentEvent, previousEvent)) {
+        overlapping = [currentEvent, previousEvent]
+        convertedEventList = convertedEventList.concat(formatOverlappingEvents(overlappingEvents, width))
     } else {
       convertedEventList = convertedEventList.concat(eventBuilder(currentEvent))
     }
@@ -63,9 +67,14 @@ var formatOverlappingEvents = function(listOfEvents, baseWidth){
 }
 
 
-var eventOverlap = function(eventOne, eventTwo){
-  if (eventTwo === undefined){return false}
-  return eventTwo['start'] < eventOne['end']
+var priorEventOverlap = function(currentEvent, previousEvent){
+    if (previousEvent === undefined){return false}
+      return currentEvent['start'] < previousEvent['end']
+}
+
+var eventOverlap = function(currentEvent, nextEvent){
+  if (nextEvent === undefined){return false}
+  return nextEvent['start'] < currentEvent['end']
 }
 
 var eventBuilder = function(event, left, width){
@@ -148,6 +157,28 @@ var compareEventStarts = function(eventA, eventB){
     input: [{start: 30, end: 200}, {start: 200, end: 300}],
     expected: false
   },
+].forEach(function(td){
+  var actual = eventOverlap(td.input[0], td.input[1])
+  var pass = JSON.stringify(actual) === JSON.stringify(td.expected)
+  if (pass){
+    console.log("passed:", td.name)
+  }else{
+    console.log("failed:", td.name)
+    console.log("expected:", td.expected)
+    console.log("actual:", actual)
+    process.exit()
+  }
+})
+
+
+console.log('prior overlap')
+;[
+  {
+    name: "prior overlap true",
+    input: [{start: 30, end: 150}, {start: 145, end: 670}, ],
+    expected: true
+  },
+
 ].forEach(function(td){
   var actual = eventOverlap(td.input[0], td.input[1])
   var pass = JSON.stringify(actual) === JSON.stringify(td.expected)

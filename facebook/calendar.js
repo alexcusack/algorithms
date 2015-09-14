@@ -8,6 +8,7 @@ var layOutDay = function(events, width, height){
 
   for (var i = 0; i < sortedEvents.length; ++i){
     var currentEvent = sortedEvents[i]
+    var previousEvent = sortEvents[i-1]
     var nextEvent = sortedEvents[i+1]
 
     if (/* end of list */ nextEvent === undefined){
@@ -25,11 +26,14 @@ var layOutDay = function(events, width, height){
       }
 
       convertedEventList = convertedEventList.concat(formatOverlappingEvents(overlappingEvents, width))
+    } else if (eventOverlap(currentEvent, previousEvent)) {
+        overlapping = [currentEvent, previousEvent]
+        convertedEventList = convertedEventList.concat(formatOverlappingEvents(overlappingEvents, width))
     } else {
       convertedEventList = convertedEventList.concat(eventBuilder(currentEvent))
     }
   }
-  return renderEvents(convertedEventList)
+  return convertedEventList
 }
 
 
@@ -45,6 +49,11 @@ var renderEvents = function(eventList){
   })
 }
 
+
+var priorEventOverlap = function(currentEvent, previousEvent){
+    if (previousEvent === undefined){return false}
+      return currentEvent['start'] < previousEvent['end']
+}
 
 var formatOverlappingEvents = function(listOfEvents, baseWidth){
   var subsetWidth = baseWidth/listOfEvents.length
