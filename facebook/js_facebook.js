@@ -335,3 +335,12 @@ console.log('')
 
 
 
+// [
+//   {start: 000, end: 200 },
+//   {start: 100, end: 300 },
+//   {start: 120, end: 350 },
+//   {start: 190, end: 200 },
+//   {start: 200, end: 400 },
+//   {start: 500, end: 600 },
+//   {start: 500, end: 600 },
+// ]

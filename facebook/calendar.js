@@ -1,15 +1,8 @@
 //sample
-// [
-//   {start: 000, end: 200 },
-//   {start: 100, end: 300 },
-//   {start: 120, end: 350 },
-//   {start: 190, end: 200 },
-//   {start: 200, end: 400 },
-//   {start: 500, end: 600 },
-//   {start: 500, end: 600 },
-// ]
+// [{start: 000, end: 200 },{start: 100, end: 300 },{start: 120, end: 350 },{start: 190, end: 200 },{start: 200, end: 400 },{start: 500, end: 600 },{start: 500, end: 600 },]
 
 var layOutDay = function(events, width, height){
+
   height = height || 720
   width  = width  || 600
 
@@ -56,23 +49,27 @@ var formatOverlappingEvents = function(listOfEvents, baseWidth){
   var newWidth = baseWidth/listOfEvents.length
   var left = 0
   return listOfEvents.reduce(function(list, currentEvent){
-    var formattedEvent = eventBuilder(currentEvent, left, newWidth-1)
+    var formattedEvent = eventBuilder(currentEvent, left, newWidth)
     left = left + newWidth /* update left starting point*/
     return list.concat(formattedEvent)
   },[])
 }
 
 var renderEvents = function(eventList){
+  $('.calendar-container').empty()
   eventList.forEach(function(eventNode){
-    var newNode = $('.event-node').clone()
-    $(newNode).css('margin-top', eventNode['top'])
-    $(newNode).css('margin-left', eventNode['left'])
+    var newNode = $('.template').clone()
+    $(newNode).addClass('event-node')
+    $(newNode).css('top', eventNode['top'])
+    $(newNode).css('left', eventNode['left'])
     $(newNode).css('height', eventNode['height'])
     $(newNode).css('width', eventNode['width'])
     $(newNode).toggle()
     $('.calendar-container').append(newNode)
   })
 }
+
+
 
 
 
