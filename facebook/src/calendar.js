@@ -100,3 +100,5 @@ var compareEventStarts = function(eventA, eventB){
   return eventA['start'] > eventB['start'] ? 1 : -1
 }
 
+module.exports.layOutDay = layOutDay
+global.layOutDay = layOutDay
