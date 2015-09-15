@@ -1,14 +1,13 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function (global){
 //sample
 // [{start: 000, end: 200 },{start: 100, end: 300 },{start: 120, end: 350 },{start: 190, end: 200 },{start: 200, end: 400 },{start: 500, end: 600 },{start: 500, end: 600 },]
 
-var layOutDay = function(events, width, height){
+var renderDay = function(events, width, height){
 
   height = height || 720
   width  = width  || 600
 
-  if (events.length === 0 ){return renderEvents([])}
+  if (events.length === 0 ){return []}
 
   var sortedEvents = sortEventsByStart(events)
   var convertedEventList = []
@@ -43,8 +42,10 @@ var layOutDay = function(events, width, height){
       convertedEventList = convertedEventList.concat(formattedEvents[0])
     }
   }
-  return renderEvents(convertedEventList)
+  return convertedEventList
 }
+
+
 
 
 var formatOverlappingEvents = function(listOfEvents, baseWidth){
@@ -56,22 +57,6 @@ var formatOverlappingEvents = function(listOfEvents, baseWidth){
     return list.concat(formattedEvent)
   },[])
 }
-
-var renderEvents = function(eventList){
-  $('.calendar-container').empty()
-  eventList.forEach(function(eventNode){
-    var newNode = $('.template').clone()
-    $(newNode).addClass('event-node')
-    $(newNode).css('top', eventNode['top'])
-    $(newNode).css('left', eventNode['left'])
-    $(newNode).css('height', eventNode['height'])
-    $(newNode).css('width', eventNode['width'])
-    $(newNode).toggle()
-    $('.calendar-container').append(newNode)
-  })
-}
-
-
 
 
 
@@ -102,7 +87,37 @@ var compareEventStarts = function(eventA, eventB){
   return eventA['start'] > eventB['start'] ? 1 : -1
 }
 
-module.exports.layOutDay = layOutDay
+module.exports.renderDay = renderDay
+module.exports.eventBuilder = eventBuilder
+module.exports.sortEventsByStart = sortEventsByStart
+module.exports.nextEventOverlap = nextEventOverlap
+module.exports.priorEventOverlap = priorEventOverlap
+
+
+},{}],2:[function(require,module,exports){
+(function (global){
+var renderDay = require('./calendar.js').renderDay
+
+function layOutDay(eventList){
+  renderEvents(renderDay(eventList))
+}
+
+
+var renderEvents = function(eventList){
+  $('.calendar-container').empty()
+  eventList.forEach(function(eventNode){
+    var newNode = $('.template').clone()
+    $(newNode).addClass('event-node')
+    $(newNode).css('top', eventNode['top'])
+    $(newNode).css('left', eventNode['left'])
+    $(newNode).css('height', eventNode['height'])
+    $(newNode).css('width', eventNode['width'])
+    $(newNode).toggle()
+    $('.calendar-container').append(newNode)
+  })
+}
+
+
 global.layOutDay = layOutDay
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[1]);
+},{"./calendar.js":1}]},{},[2]);
