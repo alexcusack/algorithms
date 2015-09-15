@@ -111,106 +111,12 @@ var log = function (name, itemToLog = '') {
   return itemToLog
 }
 
-;[
-  {
-    name: "create event block Test 1",
-    input: {start: 0, end: 1 },
-    expected: {top: 0, left: 0, width: 600, height: 1},
-  },
-  {
-    name: "create event block Test 2",
-    input: {start: 1, end: 2 },
-    expected: {top: 1, left: 0, width: 600, height: 1},
-  },
-].forEach(function(td){
-  var actual = eventBuilder(td.input)
-  var pass = JSON.stringify(actual) === JSON.stringify(td.expected)
-  if (pass){
-    console.log('passed', td.name)
-  }else{
-    console.log("failed:", td.name)
-    console.log("expected:", td.expected)
-    console.log("actual:", actual)
-    process.exit()
-  }
-})
 
 
-;[
-  {
-    name: "Sort Events 1",
-    input: [{start: 2, end: 3}, {start: 1, end: 2}],
-    expected: [{ start: 1, end: 2 }, { start: 2, end: 3 }]
-  },
-  {
-    name: "Sort events, even starts",
-    input: [{start: 1, end: 2}, {start: 1, end: 2}],
-    expected: [{ start: 1, end: 2 }, { start: 1, end: 2 }]
-  },
-].forEach(function(td){
-  var actual = sortEventsByStart(td.input)
-  var pass = JSON.stringify(actual) === JSON.stringify(td.expected)
-  if (pass){
-    console.log("passed:", td.name)
-  }else{
-    console.log("failed:", td.name)
-    console.log("expected:", td.expected)
-    console.log("actual:", actual)
-    process.exit()
-  }
-})
 
-;[
-  {
-    name: "event overlap true",
-    input: [{start: 1, end: 3}, {start: 2, end: 4}, ],
-    expected: true
-  },
-  {
-    name: "event overlap false",
-    input: [{start: 1, end: 2}, {start: 2, end: 3}],
-    expected: false
-  },
-].forEach(function(td){
-  var actual = nextEventOverlap(td.input[0], td.input[1])
-  var pass = JSON.stringify(actual) === JSON.stringify(td.expected)
-  if (pass){
-    console.log("passed:", td.name)
-  }else{
-    console.log("failed:", td.name)
-    console.log("expected:", td.expected)
-    console.log("actual:", actual)
-    process.exit()
-  }
-})
+
 
 console.log('')
-;[
-  {
-    name: "prior event overlap true",
-    input: [{start: 1, end: 3}, {start: 2, end: 3}, ],
-    expected: true
-  },
-  {
-    name: "prior event overlap fail case",
-    input: [{start: 1, end: 2},
-            {start: 2, end: 3},
-            ],
-    expected: false
-  },
-
-].forEach(function(td){
-  var actual = priorEventOverlap(td.input[1], td.input[0])
-  var pass = JSON.stringify(actual) === JSON.stringify(td.expected)
-  if (pass){
-    console.log("passed:", td.name)
-  }else{
-    console.log("failed:", td.name)
-    console.log("expected:", td.expected)
-    console.log("actual:", actual)
-    process.exit()
-  }
-})
 
 
 console.log('')

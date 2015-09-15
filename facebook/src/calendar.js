@@ -1,12 +1,12 @@
 //sample
 // [{start: 000, end: 200 },{start: 100, end: 300 },{start: 120, end: 350 },{start: 190, end: 200 },{start: 200, end: 400 },{start: 500, end: 600 },{start: 500, end: 600 },]
 
-var layOutDay = function(events, width, height){
+var renderDay = function(events, width, height){
 
   height = height || 720
   width  = width  || 600
 
-  if (events.length === 0 ){return renderEvents([])}
+  if (events.length === 0 ){return []}
 
   var sortedEvents = sortEventsByStart(events)
   var convertedEventList = []
@@ -41,8 +41,10 @@ var layOutDay = function(events, width, height){
       convertedEventList = convertedEventList.concat(formattedEvents[0])
     }
   }
-  return renderEvents(convertedEventList)
+  return convertedEventList
 }
+
+
 
 
 var formatOverlappingEvents = function(listOfEvents, baseWidth){
@@ -54,22 +56,6 @@ var formatOverlappingEvents = function(listOfEvents, baseWidth){
     return list.concat(formattedEvent)
   },[])
 }
-
-var renderEvents = function(eventList){
-  $('.calendar-container').empty()
-  eventList.forEach(function(eventNode){
-    var newNode = $('.template').clone()
-    $(newNode).addClass('event-node')
-    $(newNode).css('top', eventNode['top'])
-    $(newNode).css('left', eventNode['left'])
-    $(newNode).css('height', eventNode['height'])
-    $(newNode).css('width', eventNode['width'])
-    $(newNode).toggle()
-    $('.calendar-container').append(newNode)
-  })
-}
-
-
 
 
 
@@ -100,5 +86,9 @@ var compareEventStarts = function(eventA, eventB){
   return eventA['start'] > eventB['start'] ? 1 : -1
 }
 
-module.exports.layOutDay = layOutDay
-global.layOutDay = layOutDay
+module.exports.renderDay = renderDay
+module.exports.eventBuilder = eventBuilder
+module.exports.sortEventsByStart = sortEventsByStart
+module.exports.nextEventOverlap = nextEventOverlap
+module.exports.priorEventOverlap = priorEventOverlap
+

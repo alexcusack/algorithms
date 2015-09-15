@@ -1,4 +1,4 @@
-
+var renderDay = require('./calendar.js').renderDay
 ;[
   {
     name: "no event",
@@ -17,8 +17,8 @@
             {start: 1, end: 3 }
             ],
     expected: [
-              {top: 0, left: 0, width: 299, height: 2},
-              {top: 1, left: 300, width: 299, height: 2}
+              {top: 0, left: 0, width: 300, height: 2},
+              {top: 1, left: 300, width: 300, height: 2}
               ],
   },
   {
@@ -29,8 +29,8 @@
             {start: 4, end: 5 }
            ],
     expected: [
-               {top: 0, left: 0, width: 299, height: 3},
-               {top: 2, left: 300, width: 299, height: 2},
+               {top: 0, left: 0, width: 300, height: 3},
+               {top: 2, left: 300, width: 300, height: 2},
                {top: 4, left: 0, width: 600, height: 1}
               ],
   },
@@ -43,10 +43,10 @@
             {start: 0, end: 2 },
            ],
     expected: [
-               {top: 0, left: 0,   width: 149, height: 2},
-               {top: 0, left: 150, width: 149, height: 2},
-               {top: 0, left: 300, width: 149, height: 2},
-               {top: 0, left: 450, width: 149, height: 2},
+               {top: 0, left: 0,   width: 150, height: 2},
+               {top: 0, left: 150, width: 150, height: 2},
+               {top: 0, left: 300, width: 150, height: 2},
+               {top: 0, left: 450, width: 150, height: 2},
               ],
   },
   {
@@ -57,9 +57,9 @@
             {start: 2, end: 4 }
            ],
     expected: [
-               {top: 0, left: 0, width: 299, height: 2},
-               {top: 1, left: 300, width: 299, height: 2},
-               {top: 2, left: 0, width: 299, height: 2}
+               {top: 0, left: 0, width: 300, height: 2},
+               {top: 1, left: 300, width: 300, height: 2},
+               {top: 2, left: 0, width: 300, height: 2}
               ],
   },
   {
@@ -73,12 +73,12 @@
             {start: 8, end: 10},
            ],
     expected: [
-               {top: 0, left: 0, width: 299, height: 2},
-               {top: 1, left: 300, width: 299, height: 2},
-               {top: 2, left: 0, width: 299, height: 2},
+               {top: 0, left: 0, width: 300, height: 2},
+               {top: 1, left: 300, width: 300, height: 2},
+               {top: 2, left: 0, width: 300, height: 2},
                {top: 5, left: 0, width: 600, height: 2},
-               {top: 7, left: 0, width: 299, height: 2},
-               {top: 8, left: 300, width: 299, height: 2},
+               {top: 7, left: 0, width: 300, height: 2},
+               {top: 8, left: 300, width: 300, height: 2},
               ],
   },
 
@@ -92,15 +92,15 @@
             ],
     expected: [
                {top: 30, left: 0, width: 600, height: 120},
-               {top: 540, left: 0, width: 299, height: 60},
-               {top: 560, left: 300, width: 299, height: 60},
-               {top: 610, left: 0, width: 299, height: 60},
+               {top: 540, left: 0, width: 300, height: 60},
+               {top: 560, left: 300, width: 300, height: 60},
+               {top: 610, left: 0, width: 300, height: 60},
               ],
   },
 
 ].forEach(function(td){
   loggedItems = []
-  var actual = layOutDay(td.input)
+  var actual = renderDay(td.input)
   var pass = JSON.stringify(actual) === JSON.stringify(td.expected)
   if (pass){
     console.log("passed:", td.name)
@@ -110,7 +110,7 @@
     console.log(td.expected)
     console.log("actual:")
     console.log(actual)
-    loggedItems.forEach(( [label, item]) => console.log(label, item))
-    process.exit()
+    // loggedItems.forEach(( [label, item]) => console.log(label, item))
+    process.exit(1)
   }
 })

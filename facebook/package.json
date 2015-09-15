@@ -4,7 +4,7 @@
   "description": "",
   "main": "calendar.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "ls src/*.test.js | while read testFileName ; do echo $testFileName; node $testFileName ; done",
     "build": "browserify calendar.js -o bundle.js"
   },
   "author": "",
