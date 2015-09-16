@@ -95,33 +95,45 @@ module.exports.priorEventOverlap = priorEventOverlap
 
 
 },{}],2:[function(require,module,exports){
-(function (global){
-var renderDay = require('./calendar.js').renderDay
-
-function layOutDay(eventList){
-  renderEvents(renderDay(eventList))
+function renderEventNode(eventData){
+  var newNode = $('<div><div class="right-border"></div><div></div></div>')
+  $(newNode).addClass('event-node')
+  $(newNode).css('top', eventData['top'])
+  $(newNode).css('left', eventData['left'])
+  $(newNode).css('height', eventData['height'])
+  $(newNode).css('width', eventData['width'])
+  return newNode
 }
 
+module.exports.renderEventNode = renderEventNode
 
-var renderEvents = function(eventList){
-  $('.calendar-container').empty()
-  eventList.forEach(function(eventNode){
-    var newNode = renderEventNode(eventNode)
-    $('.calendar-container').append(newNode)
+},{}],3:[function(require,module,exports){
+(function (global){
+var renderEventNode = require("./renderEventNode").renderEventNode
+var renderDay = require('./calendar.js').renderDay
+
+var runTest = function(){
+  buildTest([{start: 100, end: 200}, {start: 250, end: 275}])
+  buildTest([{start: 100, end: 200}, {start: 190, end: 275}])
+  buildTest([{start: 100, end: 200}, {start: 190, end: 275},{start: 190, end: 275}, {start: 270, end: 300}])
+}
+
+function buildTest(eventData){
+  var width = 300
+  var height= 300
+  var eventData = renderDay(eventData, width, height)
+  var nodes = eventData.map(renderEventNode)
+  var containerEL = $("<div class='calendar-container'>")
+  containerEL.css('height', height)
+  containerEL.css('width', width)
+  containerEL.css('float', "left")
+  $('body').append(containerEL)
+  nodes.forEach(function(node){
+    $(containerEL).append(node)
   })
 }
 
-function renderEventNode(eventNode){
-  var newNode = $('.template').clone()
-  $(newNode).addClass('event-node')
-  $(newNode).css('top', eventNode['top'])
-  $(newNode).css('left', eventNode['left'])
-  $(newNode).css('height', eventNode['height'])
-  $(newNode).css('width', eventNode['width'])
-  $(newNode).toggle()
-}
 
-
-global.layOutDay = layOutDay
+global.runTest = runTest
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./calendar.js":1}]},{},[2]);
+},{"./calendar.js":1,"./renderEventNode":2}]},{},[3]);

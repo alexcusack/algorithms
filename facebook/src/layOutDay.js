@@ -8,15 +8,19 @@ function layOutDay(eventList){
 var renderEvents = function(eventList){
   $('.calendar-container').empty()
   eventList.forEach(function(eventNode){
-    var newNode = $('.template').clone()
-    $(newNode).addClass('event-node')
-    $(newNode).css('top', eventNode['top'])
-    $(newNode).css('left', eventNode['left'])
-    $(newNode).css('height', eventNode['height'])
-    $(newNode).css('width', eventNode['width'])
-    $(newNode).toggle()
+    var newNode = renderEventNode(eventNode)
     $('.calendar-container').append(newNode)
   })
+}
+
+function renderEventNode(eventNode){
+  var newNode = $('.template').clone()
+  $(newNode).addClass('event-node')
+  $(newNode).css('top', eventNode['top'])
+  $(newNode).css('left', eventNode['left'])
+  $(newNode).css('height', eventNode['height'])
+  $(newNode).css('width', eventNode['width'])
+  $(newNode).toggle()
 }
 
 

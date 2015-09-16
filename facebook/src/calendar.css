@@ -6,15 +6,15 @@
 .calendar-container{
   position: relative;
   outline: blue 1px solid;
-  height: 720px;
-  width: 600px;
+  /*height: 720px;*/
+  /*width: 600px;*/
   background-color: #F3F3F3;
 }
 
 .event-node{
   /*outline: red 1px solid;*/
   background-color: white;
-  display: none;
+  /*display: none;*/
   position: absolute;
 }
 

@@ -1,6 +1,3 @@
-//sample
-// [{start: 000, end: 200 },{start: 100, end: 300 },{start: 120, end: 350 },{start: 190, end: 200 },{start: 200, end: 400 },{start: 500, end: 600 },{start: 500, end: 600 },]
-
 var renderDay = function(events, width, height){
 
   height = height || 720
@@ -20,7 +17,7 @@ var renderDay = function(events, width, height){
     var nextEventOverlaps  = nextEventOverlap(currentEvent, nextEvent)
     var priorEventOverlaps = priorEventOverlap(currentEvent, previousEvent)
 
-    if ( !nextEventOverlaps && !priorEventOverlaps){ convertedEventList = convertedEventList.concat(eventBuilder(currentEvent)) }
+    if ( !nextEventOverlaps && !priorEventOverlaps){ convertedEventList = convertedEventList.concat(eventBuilder(currentEvent, 0, width)) }
 
     if (nextEventOverlaps){
       ++i /* increment i to skip 'nextEvent' on next loop through */
