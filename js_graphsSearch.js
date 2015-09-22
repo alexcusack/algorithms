@@ -20,11 +20,12 @@ function findShortestPath(graph, start, destination, visited){
   visited.push(start)
 
   if (graph[destination] === undefined || graph[start] === undefined){ return 'not on graph' }
-  if (neighbors(graph[start],destination)){ return route.concat(destination) }
 
   var originBranches = graph[start]
   var destinationBranches = graph[destination]
-  var overLappingPoint = findOverLappingPoints(originBranches, destinationBranches)
+  var overLappingPoint = findOverLappingPoint(originBranches, destinationBranches)
+
+  if (neighbors(originBranches, destination)){ return route.concat(destination) }
 
   if (overLappingPoint){
     log('in overLappingPoint', overLappingPoint)
@@ -60,7 +61,7 @@ function removedAlreadyVistedPoints(originBranches, visitedPoints) {
 }
 
 /* return first matching overlap */
-function findOverLappingPoints(originBranches, endCities){
+function findOverLappingPoint(originBranches, endCities){
   for (var i = 0; i < originBranches.length; ++i){
     var currentCity = originBranches[i]
     for (var j = 0; j < endCities.length; ++j){
