@@ -1,30 +1,18 @@
 // input: courses to take, courses with prerequisites
 // output: boolean
 
-// courses: [
-//   [course, prerequisites]
-//   [1,0],
-// ]
-
-// graph would be 0->1
-
-// if there is a preReq, recurse with that preReq sent to current course. and check if the preReqs
-// of that course include itself, or go outside of the range allowed
-//
-// if current
 
 function canFinish(courseCount, arrCourses, takenCourses, graph, previousCourse){
-  if (arrCourses.length === 0){ return false }
-  takenCourses = takenCourses || {'count': 0}
+  if (arrCourses.length === 0){ return true }
+  takenCourses = takenCourses || {}
   graph = graph || generateGraph(arrCourses)
   var course = arrCourses[0][0]
   var preReq = graph[course]
   if (preReq === course){ return false }
   if (preReq === previousCourse){ return false }
-  if (!takenCourses[course]){ takenCourses[course] = true; takenCourses['count'] += 1 }
-  if (takenCourses['count'] >= courseCount){ return false }
-  if (arrCourses.length > 1){ return canFinish(courseCount, arrCourses.slice(1), takenCourses, graph, course) }
-  return true
+  if (!takenCourses[course]){ takenCourses[course] = true }
+  if (Object.keys(takenCourses).length >= courseCount){ return false }
+  return canFinish(courseCount, arrCourses.slice(1), takenCourses, graph, course)
 }
 
 
@@ -53,7 +41,7 @@ function updateGraphValues(graph, key, course){
  {
     name: "empty course list",
     input: [1, []],
-    expected: false,
+    expected: true,
   },
   {
     name: "single Course",

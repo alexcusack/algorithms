@@ -1,25 +1,12 @@
 
-function maxDepthOntree(node, maxDepth, currentDepth){
+
+
+function maxDepthOntree(node, maxDepth){
   maxDepth = maxDepth || 0
-  currentDepth = currentDepth || 0
-
   if (node.length === 0){ return maxDepth }
-
-  if (isLeaf(node)) {
-    maxDepth = currentDepth > maxDepth ? currentDepth : maxDepth
-    return maxDepth
-  }
-
-  /* branch */
-
-  maxDepth = currentDepth > maxDepth ? currentDepth : maxDepth
   var head = node[0]
-  var rest = node.slice(1)
-  var headMax = maxDepthOntree(head, maxDepth, ++currentDepth)
-  var tailMax = maxDepthOntree(rest, maxDepth, ++currentDepth)
-  console.log('headm', headMax)
-  console.log('restm', tailMax)
-  return headMax > tailMax
+  var tail = node.slice(1)
+  if (/* bottom of branch */ isLeaf(head))
 
 }
 
@@ -28,15 +15,20 @@ function isBranch(node){return !isLeaf(node)}
 
 
 ;[
-  // {
-  //   name: "test 1",
-  //   input: [0],
-  //   expected: 1
-  // },
-   {
-    name: "test 2",
-    input: [0,[1]],
-    expected: 9
+    {
+      name: "test 1",
+      input: [0],
+      expected: 1
+    },
+     {
+      name: "test 2",
+      input: [0,[1]],
+      expected: 2
+    },
+     {
+    name: "test 3",
+    input: [0,[1,[4],3]],
+    expected: 2
   },
 ].forEach(function(td){
   var actual = maxDepthOntree(td.input)

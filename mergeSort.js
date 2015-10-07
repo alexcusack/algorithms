@@ -1,6 +1,5 @@
 
 var mergeSort = function(unsortedArray){
-  // log("unsortedArray", unsortedArray)
   if (unsortedArray === undefined ){ return [] }
   if (unsortedArray.length <= 1){ return unsortedArray }
 
