@@ -1,4 +1,4 @@
-/* pick pivot */
+  /* pick pivot */
 /* sort pivot */
 /* sort left */
 /* sort right */
@@ -35,6 +35,13 @@ function quickSort(array){
     array[i] < pivot ? leftArr.push(array[i]) : rightArr.push(array[i])
   }
   return quickSort(leftArr).concat(pivot, quickSort(rightArr))
+}
+
+
+const quickSort = (array) => {
+  return array.reduce((memo, currentValue) => {
+
+  }, [])
 }
 
 

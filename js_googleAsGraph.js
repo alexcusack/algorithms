@@ -19,7 +19,7 @@ const updateNeighbors=(row, column, matrix)=>{
   deltas.forEach((rowColumn)=>{
     const newColumn = column + rowColumn[0]
     const newRow    = row + rowColumn[1]
-    if (validPosition(newRow, newColumn, matrix) && matrix[newRow][newColumn] === 1){
+    if (validPosition(newRow, newColumn, matrix) && matrix[newRow][newColumn] === 1) {
       matrix[newRow][newColumn] = 0
       updateNeighbors(newRow, newColumn, matrix)
     }

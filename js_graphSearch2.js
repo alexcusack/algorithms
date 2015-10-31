@@ -1,18 +1,17 @@
 
-
-function findShortestPath(graph, start, destination){
+function findShortestPath(graph, start, destination) {
   /* does branch of start include end */
   var queue = [[start]]
   var visited = {}
   visited[start] = true
-  while (queue.length > 0 ){
+  while (queue.length > 0) {
     var path = queue.shift()
-    var pathEnd = path[path.length-1]
-    if (pathEnd === destination){ return path }
-    graph[pathEnd].forEach(function(node){
-      if (!visited[node]){
+    var pathEnd = path[path.length - 1] // last letter of path
+    if (pathEnd === destination) { return path }
+    graph[pathEnd].forEach(function (node) {
+      if (!visited[node]) {
         visited[node] = true
-        queue.push(path.concat(node))
+        queue.push(path.concat(node)) // if we've not visted the node, add it on
       }
     })
   }

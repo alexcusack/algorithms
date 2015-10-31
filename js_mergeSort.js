@@ -3,10 +3,10 @@
 
 function mergeSort(array){
   if (array.length < 2) {return array}
-  var middleIndex = Math.floor(array.length/2)
-  var leftArr = array.slice(0,middleIndex)
-  var rightArr = array.slice(middleIndex, array.length)
-  return merge(mergeSort(leftArr), mergeSort(rightArr))
+  var middleIndex = Math.floor(array.length/2)// get middle
+  var leftArr = array.slice(0,middleIndex) // divide left and right
+  var rightArr = array.slice(middleIndex, array.length) // divide left and right
+  return merge(mergeSort(leftArr), mergeSort(rightArr)) //
 }
 
 
@@ -18,8 +18,8 @@ function merge(leftArr, rightArr){
   }
 
   /* account for unbalanced arrays */
-  while(leftArr.length > 0 ) { mergedArray.push(leftArr.shift()) }
-  while(rightArr.length > 0) { mergedArray.push(rightArr.shift())}
+  while(leftArr.length > 0) { mergedArray.push(leftArr.shift()) }
+  while(rightArr.length > 0) { mergedArray.push(rightArr.shift()) }
   return mergedArray
 }
 

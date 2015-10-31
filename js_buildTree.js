@@ -8,16 +8,16 @@ export const flatArraytoTree=(flatArray)=>{
 const buildTree=(stackAndTree, currentValue)=>{
   let stack = stackAndTree[0]
   let tree = stackAndTree[1]
-  if (!isNaN(currentValue)){
+  if (!isNaN(currentValue)) {
     tree.push(currentValue)
     return [stack, tree]
   }
-  if (currentValue === "["){
+  if (currentValue === "[") {
     stack = stack.concat([tree])
     tree = []
     return [stack, tree]
   }
-  if (currentValue === "]"){
+  if (currentValue === "]") {
     tree = stack.pop().concat([tree])
     return [stack, tree]
   }
@@ -27,8 +27,8 @@ const buildTree=(stackAndTree, currentValue)=>{
 ;[
   {
     name: "no nesting",
-    input: [1,2],
-    expected: [1,2]
+    input: [1, 2],
+    expected: [1, 2]
   },
    {
     name: "single nesting",
