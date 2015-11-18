@@ -4,19 +4,19 @@
 /* sort right */
 /* sort left of right */
 
-function palindrome(string){
+function palindrome(string) {
   var stack  = []
-  string.split('').sort().map(function(character){
-    if (character === ' ') {return }
-    stack[stack.length -1] === character ? stack.pop() : stack.push(character)
+  string.split('').sort().map(function(character) {
+    if (character === ' ') { return }
+    stack[stack.length -1 ] === character ? stack.pop() : stack.push(character)
   })
   return stack.length <= 1
 }
 
-function editsAway(origin, target){
+function editsAway (origin, target) {
   var length = origin.length
   var i = 0
-  origin.split('').map(function(character){
+  origin.split('').map(function (character) {
     if (target.charAt(i++) === character) { --length }
   })
   console.log(length)
@@ -24,24 +24,15 @@ function editsAway(origin, target){
 }
 
 
-
-
-function quickSort(array){
-  if (array.length < 2) {return array}
+function quickSort (array) {
+  if (array.length < 2) { return array }
   var pivot = array[0]
   var leftArr = []
   var rightArr = []
-  for (var i = 1; i < array.length; ++i){
+  for (var i = 1; i < array.length; ++i) {
     array[i] < pivot ? leftArr.push(array[i]) : rightArr.push(array[i])
   }
   return quickSort(leftArr).concat(pivot, quickSort(rightArr))
-}
-
-
-const quickSort = (array) => {
-  return array.reduce((memo, currentValue) => {
-
-  }, [])
 }
 
 

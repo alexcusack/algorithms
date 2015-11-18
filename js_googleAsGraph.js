@@ -1,7 +1,15 @@
 
 const deltas = [[-1, 0],  [0, -1],   [1,0],   [0,1]]
+[
+  [0, 0, 0, 0],
+  [0, 0, 0, 0],
+  [0, 1, 0, 0],
+  [0, 1, 1, 0],
+  [0, 0, 1, 0],
+]
 
-const countWhiteSpaces=(matrix)=>{
+
+const countWhiteSpaces = (matrix) => {
   let whiteSpaces = 0
   for (let row = 0; row < matrix.length; ++row){
     for (let column = 0; column < matrix[0].length; ++column){

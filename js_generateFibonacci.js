@@ -4,26 +4,24 @@
 // so basically, I want you to combine an implementation of the fibonacci series computer using dynamic programming
 // (which is sometimes described as “recursion backwards”) with es6 generators
 
-function *fibs(){
+function * fibs () {
   let twoPrevious = 0
   let onePrevious = 1
   yield twoPrevious
   yield onePrevious
-  while(true){
+  while (true) {
     yield onePrevious + twoPrevious
     onePrevious = twoPrevious + onePrevious
     twoPrevious = onePrevious - twoPrevious
   }
 }
 
-const fibonacci =()=>{
-  for (let fib of fibs()){
+const fibonacci = () => {
+  for (let fib of fibs()) {
     console.log(fib)
-    if (fib > 100){break}
+    if (fib > 100) { break }
   }
 }
-
-
 
 fibonacci()
 
